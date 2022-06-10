@@ -1,6 +1,9 @@
 import collections
 import functools
 import math
+import itertools
+import bisect
+import random
 from typing import List
 
 from test_framework import generic_test
@@ -10,8 +13,10 @@ from test_framework.test_utils import enable_executor_hook
 
 def nonuniform_random_number_generation(values: List[int],
                                         probabilities: List[float]) -> int:
-    # TODO - you fill in here.
-    return 0
+    prefix_sum_of_probabilities = list(itertools.accumulate(probabilities, initial=0))
+    idx_of_selected_val = bisect.bisect_left(prefix_sum_of_probabilities, random.random()) - 1
+    return values[idx_of_selected_val]
+
 
 
 @enable_executor_hook

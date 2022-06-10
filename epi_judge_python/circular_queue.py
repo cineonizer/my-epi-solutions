@@ -4,20 +4,34 @@ from test_framework.test_failure import TestFailure
 
 class Queue:
     def __init__(self, capacity: int) -> None:
-        # TODO - you fill in here.
-        return
+        self._head = self._tail = self._size = 0
+        self._capacity = capacity
+        self._da = [None] * capacity
 
     def enqueue(self, x: int) -> None:
-        # TODO - you fill in here.
+        # check if the dynamic array needs resizing
+        if self._size == self._capacity:
+            # reorder the dynamic array so that the elements are in order before upsizing
+            self._da = self._da[self._head:] + self._da[:self._head]
+
+            self._head, self._tail = 0, self._size
+            self._da += ([None] * (self._capacity))
+            self._capacity = len(self._da)
+        
+        # the element must be enqueued first before incrementing because the tail starts at 0
+        self._da[self._tail] = x
+        self._tail = (self._tail + 1) % self._capacity
+        self._size += 1
         return
 
     def dequeue(self) -> int:
-        # TODO - you fill in here.
-        return 0
+        res = self._da[self._head]
+        self._head = (self._head + 1) % self._capacity
+        self._size -= 1
+        return res
 
     def size(self) -> int:
-        # TODO - you fill in here.
-        return 0
+        return self._size
 
 
 def queue_tester(ops):

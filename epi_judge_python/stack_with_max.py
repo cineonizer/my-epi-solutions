@@ -1,23 +1,58 @@
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
-
+import collections
 
 class Stack:
+    ElementWithCachedMax = collections.namedtuple('ElementWithCachedMax', ('element', 'cached_max'))
+    
+    def __init__(self) -> None:
+        # O(n) space complexity
+        self._items: List[Stack.ElementWithCachedMax] = []
+
     def empty(self) -> bool:
-        # TODO - you fill in here.
-        return True
+        # O(1) time complexity
+        return len(self._items) == 0
 
     def max(self) -> int:
-        # TODO - you fill in here.
-        return 0
+        # O(1) time complexity
+        return self._items[-1].cached_max
 
     def pop(self) -> int:
-        # TODO - you fill in here.
-        return 0
+        # O(1) amortized time complexity
+        return self._items.pop().element
 
     def push(self, x: int) -> None:
-        # TODO - you fill in here.
-        return
+        # O(1) amortized time complexity
+        self._items.append(
+            self.ElementWithCachedMax(x, x if self.empty() else max(self.max(), x))
+        )
+
+    """
+    def __init__(self) -> None:
+        # O(n) space complexity
+        self._items = []
+
+    def empty(self) -> bool:
+        # O(1) time complexity
+        return len(self.items) == 0
+
+    def max(self) -> int:
+        # O(n) time complexity
+        max_val = self.items[0]
+        for item in self.items:
+            max_val = max(max_val, item)
+        return max_val
+
+    def pop(self) -> int:
+        # O(1) amortized time complexity
+        return self.items.pop()
+
+    def push(self, x: int) -> None:
+        # O(1) amortized time complexity
+        self.items.append(x)
+    """
+
+        
 
 
 def stack_tester(ops):

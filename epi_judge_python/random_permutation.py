@@ -1,6 +1,7 @@
 import copy
 import functools
 import math
+import random
 from typing import List
 
 from test_framework import generic_test
@@ -10,9 +11,23 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def compute_random_permutation(n: int) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    # bruce force method avg case time complexity: O(n log n)
+    # worst case time complexity: O(n^2)
+    
+    nums_seen = set()
+    for i in range(n):
+        random_num = random.randrange(n)
+        while random_num in nums_seen:
+            random_num = random.randrange(n)
+        nums_seen.add(random_num)
+    return list(nums_seen)
 
+    # worst case time complexity: O(n)
+    # result = [i for i in range(n)]
+    # for i in range(n):
+    #     rand_idx = random.randint(i, n - 1)
+    #     result[i], result[rand_idx] = result[rand_idx], result[i]
+    # return result
 
 @enable_executor_hook
 def compute_random_permutation_wrapper(executor, n):

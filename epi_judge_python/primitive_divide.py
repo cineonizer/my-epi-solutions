@@ -2,8 +2,14 @@ from test_framework import generic_test
 
 
 def divide(x: int, y: int) -> int:
-    # TODO - you fill in here.
-    return 0
+    pass
+
+def subtract(x: int, y: int) -> int:
+    while y:
+        borrow = ~x & y
+        x ^= y
+        y = borrow << 1
+    return x
 
 
 if __name__ == '__main__':

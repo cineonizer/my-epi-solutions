@@ -1,11 +1,25 @@
 from typing import List
+import collections
+import copy
 
 from test_framework import generic_test
 
 
 def rotate_matrix(square_matrix: List[List[int]]) -> None:
-    # TODO - you fill in here.
-    return
+    for i in range(len(square_matrix) // 2):
+        for j in range(i, len(square_matrix) - 1 - i):
+            square_matrix[i][j], square_matrix[~j][i], square_matrix[~i][~j], square_matrix[j][~i] = square_matrix[~j][i], square_matrix[~i][~j], square_matrix[j][~i], square_matrix[i][j]
+
+    # O(n^2) time and O(n) space complexity
+    # H = collections.defaultdict(list)
+    # n = len(square_matrix)
+
+    # for idx, row in zip(reversed(range(n)), square_matrix):
+    #     H[idx] = copy.copy(row)
+
+    # for c in range(n):
+    #     for r in range(n):
+    #         square_matrix[r][c] = H.get(c)[r]
 
 
 def rotate_matrix_wrapper(square_matrix):

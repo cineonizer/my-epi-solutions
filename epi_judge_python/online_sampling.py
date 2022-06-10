@@ -1,5 +1,9 @@
 import functools
+import random
+import itertools
 from typing import Iterator, List
+
+from matplotlib.pyplot import streamplot
 
 from test_framework import generic_test
 from test_framework.random_sequence_checker import (
@@ -10,8 +14,20 @@ from test_framework.test_utils import enable_executor_hook
 
 # Assumption: there are at least k elements in the stream.
 def online_random_sample(stream: Iterator[int], k: int) -> List[int]:
-    # TODO - you fill in here.
-    return []
+    sample = []
+    for data in stream:
+        sample.append(data)
+        if len(sample) == k: break
+
+    # above for loop is the same thing as sample = list(itertools.islice(stream, k))
+
+    num_seen_so_far = k
+    for data in stream:
+        num_seen_so_far += 1
+        idx_to_swap = random.randrange(num_seen_so_far)
+        if idx_to_swap < k:
+            sample[idx_to_swap] = data
+    return sample
 
 
 @enable_executor_hook

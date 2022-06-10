@@ -1,4 +1,5 @@
 import functools
+import random
 from typing import List
 
 from test_framework import generic_test
@@ -9,9 +10,25 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def random_subset(n: int, k: int) -> List[int]:
-    # TODO - you fill in here.
-    return []
 
+    # brute force method time complexity: O(n) to create array, O(k) to create random subset
+    # space complexity: O(n) to create the array
+
+    # superset = [i for i in range(n)]
+    # for i in range(k):
+    #     random_idx = random.randint(i, n - 1)
+    #     superset[i], superset[random_idx] = superset[random_idx], superset[i]
+    # return superset[:k]
+
+    # faster method: O(k) space and time complexity use a hash map
+    subset = {}
+    for i in range(k):
+        random_idx = random.randrange(i, n)
+        random_idx_mapped = subset.get(random_idx, random_idx)
+        i_mapped = subset.get(i, i)
+        subset[random_idx] = i_mapped
+        subset[i] = random_idx_mapped
+    return [subset[i] for i in range(k)]
 
 @enable_executor_hook
 def random_subset_wrapper(executor, n, k):

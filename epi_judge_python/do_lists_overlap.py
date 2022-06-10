@@ -1,4 +1,5 @@
 import functools
+from turtle import end_fill
 from typing import Optional
 
 from list_node import ListNode
@@ -6,10 +7,31 @@ from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 from test_framework.test_utils import enable_executor_hook
 
+from do_terminated_lists_overlap import overlapping_no_cycle_lists
+from is_list_cyclic  import has_cycle
 
 def overlapping_lists(l0: ListNode, l1: ListNode) -> Optional[ListNode]:
-    # TODO - you fill in here.
-    return None
+    root0, root1 = has_cycle(l0), has_cycle(l1)
+    # case when both lists do not have cycles then just implement 7.4 solution
+    if not root0 and not root1:
+        return overlapping_no_cycle_lists(l0, l1)
+    # case when only one linked list has a cycle then intersection is not possible
+    elif (not root0 and root1) or (root0 and not root0):
+        return None
+    # case when both linked lists have cycles
+
+    # traverse from the starting node of the list0's cycle and check if it comes across any node of the root1, which means it overlaps
+    # if the temp reaches back to the start (root0) then there was no overlap so break
+    temp = root0
+    while temp:
+        temp = temp.next
+        # if temp finds a node or comes back to the start then break
+        if temp is root1 or temp is root0:
+            break
+    # return any of the node in the cycle else None
+    return root0 if temp is root1 else None
+    
+
 
 
 @enable_executor_hook

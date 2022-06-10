@@ -8,8 +8,14 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def find_successor(node: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
-    return None
+    if node.right:
+        node = node.right
+        while node.left:
+            node = node.left
+        return node
+    while node.parent and node.parent.left is not node:
+        node = node.parent
+    return node.parent
 
 
 @enable_executor_hook
